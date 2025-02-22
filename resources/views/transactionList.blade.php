@@ -18,40 +18,34 @@
 <body class="font-sans antialiased">
     <div class="container">
         <div class="row justify-content-center">
-            @if ($errors->any())
-            <div class="alert alert-danger">
+            <h1>Transaction List</h1>
+
+            @foreach ($transactions as $transaction)
+            <div style="border: 1px solid #ccc; margin-bottom: 20px; padding: 10px;">
+                <h3>Transaction #{{ $transaction->id }}</h3>
+                <p>Payment method: {{ $transaction->pay_method }}</p>
+                <p>Amount: {{ $transaction->amount }}</p>
+                <p>Coin: {{ $transaction->currency }}</p>
+                <p>Status: {{ $transaction->status }}</p>
+                <p>Creation date: {{ $transaction->created_at }}</p>
+
+                <!-- Historial de logs para esta transacción -->
+                <h4>Historial</h4>
+                @if($transaction->logs->count())
                 <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    @foreach ($transaction->logs as $log)
+                    <li>
+                        <strong>Type:</strong> {{ $log->type }} <br>
+                        <strong>Payload:</strong> {{ $log->payload }} <br>
+                        <strong>Date:</strong> {{ $log->created_at }}
+                    </li>
                     @endforeach
                 </ul>
+                @else
+                <p>There are no transactions</p>
+                @endif
             </div>
-            @endif
-            <form action="/deposit" method="post">
-                @csrf
-                <div class="form-group">
-                    <label for="name">Payment method</label>
-                    <select class="form-control" id="pay-method" name="pay-method">
-                        <option value="easymoney" {{ old('pay-method') === 'easymoney' ? 'selected' : '' }}>EasyMoney</option>
-                        <option value="superwalletz" {{ old('pay-method') === 'superwalletz' ? 'selected' : '' }}>SuperWalletz</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="text" class="form-control" id="amount" name="amount" placeholder="Insert amount"
-                        value="{{ old('amount', 25) }}">
-                </div>
-                <div class="form-group">
-                    <label for="currency">Currency</label>
-                    <select class="form-control" id="currency" name="currency">
-                        <option value="USD" {{ old('currency') === 'USD' ? 'selected' : '' }}>USD</option>
-                        <option value="EUR" {{ old('currency') === 'EUR' ? 'selected' : '' }}>EUR</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Deposit</button>
-                </div>
-            </form>
+            @endforeach
         </div>
     </div>
     <style>
