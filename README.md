@@ -1,3 +1,29 @@
+He creado la clase DepositController donde:
+
+  - Se reciben los datos del formulario
+  - Se configura el payload adecuado para cada plataforma de pago
+  - Se envía a la plataforma de pago
+  - Se controla el webhook, cambiando el estado de la transacción. Nota: se guardan todas las veces que llega el webhook
+
+Los datos se guardan en la tabla Transactions, donde se guarda cada una de las transacciones que se hacen  y se reflejan en cada momento en que situación están.
+También he creado la tabla TransactionsLogs la cual contiene un histórico de cada una de las transacciones: cuando se crea, cuando se pasa a la plataforma de pago, cuando la plataforma de pago contest y cuando se confirma con el webhook
+Estas tablas se crean mediante sus correspondientes migraciones
+
+Con la clase PaymentRequest se valida que los datos de entrada son adecuados
+
+He creado una ruta transactionList con todas las transacciones que se realizan, para una fácil comprobación
+
+He creado el proyecto con Laravel 11, pho 8.3 y mysql 8
+
+Para ejecutar la aplicación, despues de descargarla del repositorio hay que hacer los siguientes pasos:
+  - ejecutar composer install
+  - crear y configurar el archivo .env con las claves de la base de datos
+  - ejecutar php artisan key:generate
+  - ejecutar php artisan migrate:fresh
+  - Si sa va a desplegar en un servidor de pruebas, se puede usar php artisan serve lo cual pondrá disponible la aplicación en http://localhost:8000
+  - También hay que hacer funcionar los dummies de las pasarelas de pago según la información facilitrada en las instrucciones
+
+
 **Prueba Técnica Laravel: Integración de Sistemas de Pago**
 
 ### Descripción General:
